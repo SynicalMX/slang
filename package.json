@@ -1,5 +1,6 @@
 {
   "name": "scratch-compiler",
+  "repository": "https://github.com/SynicalMX/scratch-compiler.git",
   "author": "synicalmx",
   "version": "0.1.0",
   "module": "src/index.ts",
