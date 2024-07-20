@@ -1,0 +1,22 @@
+{
+  "name": "scratch-compiler",
+  "author": "synicalmx",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts"
+  },
+  "exports": {
+    "default": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "ts-md5": "^1.3.1"
+  }
+}
