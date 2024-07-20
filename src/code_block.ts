@@ -5,6 +5,9 @@ import { getOpcodeName, type Opcode } from "./opcodes";
 import type { Block } from "./types";
 import uid from "./util/uid";
 
+/**
+ * This class handles data for code blocks, it is used internally.
+ */
 export default class CodeBlock {
 	public uid: string;
 	public opcode: Opcode;
@@ -28,6 +31,10 @@ export default class CodeBlock {
 		this.topLevel = (this.parent === null);
 	}
 
+	/**
+	 * Sets the next block to be ran under this block.
+	 * @param child The uid of the next CodeBlock
+	 */
 	public setChild(child: string | null) {
 		this.nextUid = child;
 	}

@@ -5,6 +5,11 @@
 
 // TODO: Add extension blocks.
 // TODO: Add hidden and internal blocks.
+
+/**
+ * This enum contains all the valid opcodes used in a Scratch project.
+ * However, this currently does not contain any extension opcodes.
+ */
 export enum Opcode {
 	// Motion Opcodes
 	MOTION_MOVESTEPS,

@@ -1,13 +1,14 @@
 import type { Block, Costume, List, Sound, Target, Variable, Comment } from "./types";
-import uid from "./util/uid";
 import generateAssetHash from "./util/file";
-import type CodeBlock from "./script";
-import type Script from "./script";
+import type ScriptBuilder from "./script";
 
 const EXTRACT_FILE_FROM_PATH = /[^\\/:*?"<>|\r\n]+$/g;
 const EXTRACT_FILENAME = /(^\w+(?=\.))/g;
 const EXTRACT_FILE_EXT = /[0-9a-z]+$/i;
 
+/**
+ * Base class for targets, extended by ScratchSprite and ScratchStage
+ */
 export abstract class ScratchObject {
 	public isStage: boolean;
 	public name: string;
@@ -38,6 +39,15 @@ export abstract class ScratchObject {
 	}
 
 	// FIXME: Regex for some reason gives undefined results, making output invalid.
+	// FIXME: Make assets not be required to be in an assets folder.
+
+	/**
+	 *
+	 * @param relativePath The asset filename.
+	 * @param dataFormat Regex is busted, so this is a temporary hack.
+	 * @param bitmap The resolution of the image for bitmap images. Defaults to 2, or 1 for non-bitmaps.
+	 * @returns
+	 */
 	public addCostume(relativePath: string, dataFormat: string, bitmap?: boolean): ScratchObject {
 		const assetHash = generateAssetHash(`assets/${relativePath}`);
 		// const assetFullFilename = EXTRACT_FILE_FROM_PATH.exec(relativePath)?.[0];
@@ -68,12 +78,21 @@ export abstract class ScratchObject {
 		return this;
 	}
 
-	public addCode(script: Script): ScratchObject {
+	/**
+	 *
+	 * @param script Uses a ScriptBuilder instance.
+	 * @returns The current ScratchObject being built.
+	 */
+	public addCode(script: ScriptBuilder): ScratchObject {
 		const oldBlocks = this.blocks;
 		this.blocks = Object.assign(oldBlocks, script.export());
 		return this;
 	}
 
+	/**
+	 * This function is used internally to generate the target.
+	 * @returns Raw target for project.
+	 */
 	public export(): Target {
 		return {
 			isStage: this.isStage,

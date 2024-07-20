@@ -5,6 +5,11 @@ import { cwd } from "process";
 
 const cache: Map<string, string> = new Map();
 
+/**
+ * Scratch names its files after their md5 hash. This function supplies the hash.
+ * @param relativePath The path of the asset.
+ * @returns MD5 hash of the asset.
+ */
 export default function generateAssetHash(relativePath: string): string | undefined {
 	if (cache.has(relativePath)) {
 		return cache.get(relativePath);

@@ -2,6 +2,9 @@
  * @fileoverview Internally, scratch has types that we must adhere to for valid codeblocks.
  */
 
+/**
+ * This enum tells Scratch which type to use for inputs.
+ */
 export enum ScratchType {
 	RESERVED_0,
 	RESERVED_1,
