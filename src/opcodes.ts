@@ -2,13 +2,10 @@
  * @fileoverview This file contains an enum of all the possible opcodes within the scratch-vm.
  */
 
-
-// TODO: Add extension blocks.
-// TODO: Add hidden and internal blocks.
+import camelcase from "camelcase";
 
 /**
  * This enum contains all the valid opcodes used in a Scratch project.
- * However, this currently does not contain any extension opcodes.
  */
 export enum Opcode {
 	// Motion Opcodes
@@ -156,9 +153,153 @@ export enum Opcode {
 	PROCEDURES_DEFINITION,
 	PROCEDURES_CALL,
 	ARGUMENT_REPORTER_STRING_NUMBER,
-	ARGUMENT_REPORTER_BOOLEAN
+	ARGUMENT_REPORTER_BOOLEAN,
+
+	// From here on out, is all the extension opcodes.
+	// Music Extension Opcodes
+	MUSIC_PLAY_DRUM_FOR_BEATS,
+	MUSIC_REST_FOR_BEATS,
+	MUSIC_PLAY_NOTE_FOR_BEATS,
+	MUSIC_SET_INSTRUMENT,
+	MUSIC_SET_TEMPO,
+	MUSIC_CHANGE_TEMPO,
+	MUSIC_GET_TEMPO,
+
+	// Pen Extension Opcodes
+	PEN_CLEAR,
+	PEN_STAMP,
+	PEN_PEN_DOWN,
+	PEN_PEN_UP,
+	PEN_SET_PEN_COLOR_TO_COLOR,
+	PEN_CHANGE_PEN_COLOR_PARAM_BY,
+	PEN_SET_PEN_COLOR_PARAM_TO,
+	PEN_CHANGE_PEN_SIZE_BY,
+	PEN_SET_PEN_SIZE_TO,
+
+	// Video Sensing Extension Opcodes
+	VIDEOSENSING_WHEN_MOTION_GREATER_THAN,
+	VIDEOSENSING_VIDEO_ON,
+	VIDEOSENSING_VIDEO_TOGGLE,
+	VIDEOSENSING_SET_VIDEO_TRANSPARENCY,
+
+	// Text to Speech Extension Opcodes
+	TEXTTOSPEECH_SPEAK_AND_WAIT,
+	TEXTTOSPEECH_SET_VOICE,
+	TEXTTOSPEECH_SET_LANGUAGE,
+
+	// Translate Extension Opcodes
+	TRANSLATE_GET_TRANSLATE,
+	TRANSLATE_GET_VIEWER_LANGUAGE,
+
+	// Makey Makey Extension Opcodes
+	MAKEYMAKEY_WHEN_MAKEY_KEY_PRESSED,
+	MAKEYMAKEY_WHEN_CODE_PRESSED,
+
+	// micro:bit Extension Opcodes
+	MICROBIT_WHEN_BUTTON_PRESSED,
+	MICROBIT_IS_BUTTON_PRESSED,
+	MICROBIT_WHEN_GESTURE,
+	MICROBIT_DISPLAY_SYMBOL,
+	MICROBIT_DISPLAY_TEXT,
+	MICROBIT_DISPLAY_CLEAR,
+	MICROBIT_WHEN_TILTED,
+	MICROBIT_IS_TILTED,
+	MICROBIT_GET_TILT_ANGLE,
+	MICROBIT_WHEN_PIN_CONNECTED,
+
+	// LEGO MINDSTORMS EV3 Extension
+	EV3_MOTOR_TURN_CLOCKWISE,
+	EV3_MOTOR_TURN_COUNTER_CLOCKWISE,
+	EV3_MOTOR_SET_POWER,
+	EV3_GET_MOTOR_POSITION,
+	EV3_WHEN_BUTTON_PRESSED,
+	EV3_WHEN_DISTANCE_LESS_THAN,
+	EV3_WHEN_BRIGHTNESS_LESS_THAN,
+	EV3_BUTTON_PRESSED,
+	EV3_GET_DISTANCE,
+	EV3_BEEP,
+
+	// LEGO BOOST Extension
+	BOOST_MOTOR_ON_FOR,
+	BOOST_MOTOR_ON_FOR_ROTATION,
+	BOOST_MOTOR_ON,
+	BOOST_MOTOR_OFF,
+	BOOST_SET_MOTOR_POWER,
+	BOOST_SET_MOTOR_DIRECTION,
+	BOOST_GET_MOTOR_POSITION,
+	BOOST_WHEN_COLOR,
+	BOOST_SEEING_COLOR,
+	BOOST_WHEN_TILTED,
+	BOOST_GET_TILT_ANGLE,
+	BOOST_SET_LIGHT_HUE,
+
+	// LEGO Education WeDo 2.0 Extension
+	WEDO2_MOTOR_ON_FOR,
+	WEDO2_MOTOR_ON,
+	WEDO2_MOTOR_OFF,
+	WEDO2_START_MOTOR_POWER,
+	WEDO2_SET_MOTOR_DIRECTION,
+	WEDO2_SET_LIGHT_HUE,
+	WEDO2_WHEN_DISTANCE,
+	WEDO2_WHEN_TILTED,
+	WEDO2_IS_TILTED,
+	WEDO2_GET_TILT_ANGLE,
+
+	// Go Direct Force & Acceleration Extension
+	GDXFOR_WHEN_GESTURE,
+	GDXFOR_WHEN_FORCE_PUSHED_OR_PULLED,
+	GDXFOR_GET_FORCE,
+	GDXFOR_WHEN_TILTED,
+	GDXFOR_IS_TILTED,
+	GDXFOR_GET_TILT,
+	GDXFOR_IS_FREE_FALLING,
+	GDXFOR_GET_SPIN_SPEED,
+	GDXFOR_GET_ACCELERATION,
 }
 
+/**
+ * This function returns the string of the codeblock's opcode to match it with scratch's
+ * @param opcode The opcode for the codeblock
+ * @returns The opcode name formatted for raw usage.
+ */
 export function getOpcodeName(opcode: Opcode): string {
-	return Opcode[opcode].toLowerCase();
+	if (opcode <= 124) {
+		return Opcode[opcode].toLowerCase();
+	} else {
+		return getExtensionOpcodeName(opcode);
+	}
+}
+
+// We have to handle multiple naming conventions for some reason, and their all from extensions.
+function getExtensionOpcodeName(opcode: Opcode): string {
+	const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWYXZ";
+	const name = camelcase(Opcode[opcode]);
+	let indexes: number[] = []
+
+	// Find all indexes with a capital letter
+	for (let i = 0; i < CHARACTERS.length; i++) {
+		const capital = CHARACTERS.charAt(i);
+
+		let idx = name.indexOf(capital);
+		if (idx >= 0) indexes.push(idx); // We have to check if the character even exists in the string.
+	}
+
+	// Find the closest capital letter's index.
+	let lowest = Infinity;
+	indexes.forEach(index => {
+		if (index < lowest) {
+			lowest = index;
+		}
+	});
+
+	// Frankenstein the name back together
+	let prefix = name.slice(0, lowest);
+	const char = name.slice(lowest, lowest+1).toLowerCase();
+	const suffix = name.slice(lowest+1);
+
+	// Why do we have different naming conventions? :sob:
+	if (prefix === "videosensing") prefix = "videoSensing";
+	if (prefix === "texttospeech") prefix = "text2speech";
+
+	return `${prefix}_${char}${suffix}`;
 }
