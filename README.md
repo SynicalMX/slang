@@ -1,6 +1,6 @@
 # scratch-compiler (working name)
 
-The goal of this project is to be able to use Typescript to programmatically create playable Scratch games.
+The goal of this project is to be able to use Typescript to programmatically create playable [Scratch](https://scratch.mit.edu/) games.
 
 In the future, you will be able to use Lua to create scratch games with this. But currently, it only supports the bare minimum of a scratch project.
 
@@ -8,30 +8,31 @@ In the future, you will be able to use Lua to create scratch games with this. Bu
 
 Usage is very clunky currently, this will be fixed in 0.2.0
 
+Particullarily, inputs will be changed instead of using raw format, and use spread operator instead.
+
 ```ts
 import scratch from "scratch-compiler";
 
 const testCode = new scratch.ScriptBuilder(scratch.Opcode.EVENT_WHENFLAGCLICKED)
-	.next(scratch.Opcode.LOOKS_SAYFORSECS, {"MESSAGE":[1,[10,"Hello!"]],"SECS":[1,[4,"2"]]});
+  .next(scratch.Opcode.LOOKS_SAYFORSECS, {MESSAGE: [1, [10, "Hello!"]],SECS: [1, [4, "2"]]});
 
 const testSprite = new scratch.ScratchSprite("TestSprite", 0, 1)
-	.addCostume("costume1.svg", "svg")
-	.addCode(testCode);
+  .addCostume("costume1.svg", "svg")
+  .addCode(testCode);
 
-const stage = new scratch.ScratchStage(0, 0)
-	.addCostume("stage1.svg", "svg");
+const stage = new scratch.ScratchStage(0, 0).addCostume("stage1.svg", "svg");
 
 new scratch.ProjectBuilder()
-	.addTarget(stage)
-	.addTarget(testSprite)
-	.build("project");
+  .addTarget(stage)
+  .addTarget(testSprite)
+  .build("project");
 ```
 
 ## Supported Feature Checklist
 
 - :white_check_mark: Targets (Sprites and Stages)
 - :white_check_mark: Scripts
-- :warning: Extensions (Partially, opcodes not implemented)
+- :white_check_mark: Extensions
 - :white_check_mark: Costumes
 - :x: Sounds
 
