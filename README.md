@@ -14,7 +14,10 @@ Particullarily, inputs will be changed instead of using raw format, and use spre
 import scratch from "scratch-compiler";
 
 const testCode = new scratch.ScriptBuilder(scratch.Opcode.EVENT_WHENFLAGCLICKED)
-  .next(scratch.Opcode.LOOKS_SAYFORSECS, {MESSAGE: [1, [10, "Hello!"]],SECS: [1, [4, "2"]]});
+  .next(scratch.Opcode.LOOKS_SAYFORSECS, {
+    MESSAGE: [scratch.ScratchType.SHADOW, [scratch.ScratchType.STRING, "Hello!"]], // Shadow blocks exist because of Blockly
+    SECS: [scratch.ScratchType.SHADOW, [scratch.ScratchType.NUMBER, "2"]]
+  });
 
 const testSprite = new scratch.ScratchSprite("TestSprite", 0, 1)
   .addCostume("costume1.svg") // Path is relative
