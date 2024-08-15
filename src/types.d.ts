@@ -6,11 +6,12 @@ import ScriptBuilder from "./script";
 export type ScratchValue = string | number | Array<string | number>;
 
 export interface ScratchCompiler {
-	ProjectBuilder: ProjectBuilder;
-	ScriptBuilder: ScriptBuilder;
-	ScratchObject: ScratchObject;
-	ScratchStage: ScratchStage;
-	Opcode: Opcode;
+	ProjectBuilder: typeof ProjectBuilder;
+	ScriptBuilder: typeof ScriptBuilder;
+	ScratchSprite: typeof ScratchSprite;
+	ScratchStage: typeof ScratchStage;
+	Opcode: typeof Opcode;
+	ScratchType: typeof ScratchType;
 }
 
 export interface Variable {
