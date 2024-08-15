@@ -103,8 +103,8 @@ export abstract class ScratchObject {
 }
 
 export class ScratchStage extends ScratchObject {
-	constructor(currentCostume: number, layerOrder: number) {
-		super(true, "Stage", currentCostume, layerOrder)
+	constructor(currentCostume: number) {
+		super(true, "Stage", currentCostume, 0)
 	}
 }
 
