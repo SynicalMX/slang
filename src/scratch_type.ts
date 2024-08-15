@@ -1,15 +1,15 @@
 /**
- * @fileoverview Internally, scratch has types that we must adhere to for valid codeblocks.
+ * @fileoverview Internally, scratch has block types that are not used publically, such as shadow blocks, but this enum must also contain types.
  */
 
 /**
  * This enum tells Scratch which type to use for inputs.
  */
 export enum ScratchType {
-	RESERVED_0,
-	RESERVED_1,
-	RESERVED_2,
-	RESERVED_3,
+	RESERVED,
+	SHADOW,
+	NO_SHADOW,
+	OBSCURED_SHADOW,
 	NUMBER,
 	SIGNED_NUMBER,
 	SIGNED_INTEGER,
