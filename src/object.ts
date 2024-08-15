@@ -2,9 +2,7 @@ import type { Block, Costume, List, Sound, Target, Variable, Comment } from "./t
 import generateAssetHash from "./util/file";
 import type ScriptBuilder from "./script";
 
-const EXTRACT_FILE_FROM_PATH = /[^\\/:*?"<>|\r\n]+$/g;
-const EXTRACT_FILENAME = /(^\w+(?=\.))/g;
-const EXTRACT_FILE_EXT = /[0-9a-z]+$/i;
+const EXTRACT_FILE_EXT = /\.[0-9a-z]+$/i;
 
 /**
  * Base class for targets, extended by ScratchSprite and ScratchStage
@@ -38,42 +36,35 @@ export abstract class ScratchObject {
 		this.volume = 100;
 	}
 
-	// FIXME: Regex for some reason gives undefined results, making output invalid.
-	// FIXME: Make assets not be required to be in an assets folder.
-
 	/**
 	 *
 	 * @param relativePath The asset filename.
-	 * @param dataFormat Regex is busted, so this is a temporary hack.
-	 * @param bitmap The resolution of the image for bitmap images. Defaults to 2, or 1 for non-bitmaps.
+	 * @param bitmap If true, it will increase the bitmap resolution to 2 instead of 1.
 	 * @returns
 	 */
-	public addCostume(relativePath: string, dataFormat: string, bitmap?: boolean): ScratchObject {
-		const assetHash = generateAssetHash(`assets/${relativePath}`);
-		// const assetFullFilename = EXTRACT_FILE_FROM_PATH.exec(relativePath)?.[0];
-		// const assetFilename = EXTRACT_FILENAME.exec(assetFullFilename as string)?.[0];
+	public addCostume(relativePath: string, bitmap?: boolean): ScratchObject {
+		const assetHash = generateAssetHash(relativePath);
 
-		if (!bitmap) {
-			this.costumes.push({
-				assetId: assetHash as string,
-				bitmapResolution: 1,
-				name: `costume${this.costumes.length + 1}`,
-				dataFormat: dataFormat,
-				md5ext: `${assetHash as string}.${dataFormat}`,
-				rotationCenterX: 0,
-				rotationCenterY: 0,
-			});
-		} else {
-			this.costumes.push({
-				assetId: assetHash as string,
-				bitmapResolution: 2,
-				name: `costume${this.costumes.length + 1}`,
-				dataFormat: dataFormat,
-				md5ext: `${assetHash as string}.${dataFormat}`,
-				rotationCenterX: 0,
-				rotationCenterY: 0,
-			});
-		}
+		// Extract the file extension, with the period
+		const fullDataFormat = EXTRACT_FILE_EXT.exec(relativePath)?.[0];
+
+		// Check if the file has an extension, if not throw error.
+		if (typeof fullDataFormat !== "string") throw new Error("File doesn't have extension.");
+
+		const dataFormat = fullDataFormat.substring(1) // remove the period
+
+		let bitmapResolution = 1;
+		if (bitmap) bitmapResolution++;
+
+		this.costumes.push({
+			assetId: assetHash as string,
+			bitmapResolution: bitmapResolution,
+			name: `costume${this.costumes.length + 1}`,
+			dataFormat: dataFormat,
+			md5ext: `${assetHash as string}${fullDataFormat}`,
+			rotationCenterX: 0,
+			rotationCenterY: 0,
+		});
 
 		return this;
 	}
@@ -91,7 +82,7 @@ export abstract class ScratchObject {
 
 	/**
 	 * This function is used internally to generate the target.
-	 * @returns Raw target for project.
+	 * @returns Raw target data for project.
 	 */
 	public export(): Target {
 		return {
