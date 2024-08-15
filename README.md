@@ -17,15 +17,16 @@ const testCode = new scratch.ScriptBuilder(scratch.Opcode.EVENT_WHENFLAGCLICKED)
   .next(scratch.Opcode.LOOKS_SAYFORSECS, {MESSAGE: [1, [10, "Hello!"]],SECS: [1, [4, "2"]]});
 
 const testSprite = new scratch.ScratchSprite("TestSprite", 0, 1)
-  .addCostume("costume1.svg", "svg")
+  .addCostume("costume1.svg") // Path is relative
   .addCode(testCode);
 
-const stage = new scratch.ScratchStage(0, 0).addCostume("stage1.svg", "svg");
+const stage = new scratch.ScratchStage(0) // Argument is costume number
+  .addCostume("stage1.svg");
 
 new scratch.ProjectBuilder()
-  .addTarget(stage)
+  .addTarget(stage) // Targets are sprites and stages.
   .addTarget(testSprite)
-  .build("project");
+  .build("project"); // project filename (without .sb3 extension)
 ```
 
 ## Supported Feature Checklist
