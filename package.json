@@ -1,6 +1,6 @@
 {
-  "name": "scratch-compiler",
-  "repository": "https://github.com/SynicalMX/scratch-compiler.git",
+  "name": "slang",
+  "repository": "https://github.com/SynicalMX/slang.git",
   "author": "synicalmx",
   "version": "0.1.1",
   "module": "src/index.ts",
