@@ -1,8 +1,6 @@
-# scratch-compiler (working name)
+# slang
 
-The goal of this project is to be able to use Typescript to programmatically create playable [Scratch](https://scratch.mit.edu/) games.
-
-In the future, you will be able to use Lua to create scratch games with this. But currently, it only supports the bare minimum of a scratch project.
+slang (scratch language) is a scripting language that compiles into playable [Scratch](https://scratch.mit.edu/) games.
 
 ## Example Usage
 
@@ -11,7 +9,7 @@ Usage is very clunky currently, this will be fixed in 0.2.0
 Particullarily, inputs will be changed instead of using raw format, and use spread operator instead.
 
 ```ts
-import scratch from "scratch-compiler";
+import scratch from "slang";
 
 const testCode = new scratch.ScriptBuilder(scratch.Opcode.EVENT_WHENFLAGCLICKED)
   .next(scratch.Opcode.LOOKS_SAYFORSECS, {
