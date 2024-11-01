@@ -9,7 +9,7 @@ import type { ScratchCompiler } from "./types.d";
  * ScratchCompiler module
  */
 const module: ScratchCompiler = {
-	ProjectBuilder: ProjectBuilder,:
+	ProjectBuilder: ProjectBuilder,
 	ScriptBuilder: ScriptBuilder,
 	ScratchSprite: ScratchSprite,
 	ScratchStage: ScratchStage,
