@@ -1,6 +1,6 @@
 # slang
 
-> ![WARNING]
+> [!WARNING]
 > slang's development is currently on pause, for the simple reason of burnout. If someone would like to maintain this project let me know!
 
 slang (scratch language) is a scripting language that compiles into playable [Scratch](https://scratch.mit.edu/) games.
